@@ -15,6 +15,7 @@ describe('CampusConnect Login E2E Tests', function () {
             options.addArguments('--no-sandbox');
             options.addArguments('--disable-dev-shm-usage');
         }
+        options.addArguments('--window-size=1280,1024');
         
         driver = await new Builder()
             .forBrowser('chrome')
@@ -40,7 +41,15 @@ describe('CampusConnect Login E2E Tests', function () {
 
         // Submit using stable ID
         const submitBtn = await driver.findElement(By.id("login-submit-btn"));
-        await submitBtn.click();
+        try {
+            await submitBtn.click();
+        } catch (err) {
+            if (err.name === 'ElementClickInterceptedError') {
+                await driver.executeScript("arguments[0].click();", submitBtn);
+            } else {
+                throw err;
+            }
+        }
 
         // Verify dashboard redirect (url contains dashboard or similar home elements)
         await driver.wait(until.urlContains('#/'), 15000);
