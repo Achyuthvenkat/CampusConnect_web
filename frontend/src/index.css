@@ -1,0 +1,398 @@
+/* ─── Google Fonts ─────────────────────────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+/* ─── Design Tokens — matches Flutter app exactly ──────────────────────────── */
+:root {
+  /* Backgrounds */
+  --background:       #F0F2F7;   /* Flutter: Scaffold bg — subtle off-white */
+  --surface:          #FFFFFF;   /* Card surfaces — pure white */
+  --surface-hover:    #F5F7FA;
+
+  /* Primary — cobalt blue from Flutter (Explore tab, active pill, buttons) */
+  --primary:          #3B53F5;
+  --primary-hover:    #2C40D4;
+  --primary-light:    #EEF0FE;   /* chip/pill background tint */
+  --primary-glow:     rgba(59, 83, 245, 0.15);
+
+  /* Status colours */
+  --success:          #22C55E;   /* "Open" badge, available dot */
+  --success-bg:       #DCFCE7;
+  --warning:          #F59E0B;
+  --error:            #EF4444;
+  --error-bg:         #FEE2E2;
+
+  /* Typography */
+  --text-primary:     #111827;   /* Near-black headings */
+  --text-secondary:   #6B7280;   /* Muted body text */
+  --text-hint:        #9CA3AF;   /* Placeholder / timestamps */
+
+  /* Borders & Dividers */
+  --divider:          #E5E7EB;
+  --border:           #E5E7EB;
+
+  /* Teal accent — used in dashboard stat cards */
+  --teal:             #14B8A6;
+  --teal-light:       #CCFBF1;
+  --blue-light:       #DBEAFE;
+  --blue-accent:      #3B82F6;
+}
+
+/* ─── Reset & Base ─────────────────────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background-color: var(--background);
+  color: var(--text-primary);
+  line-height: 1.5;
+  font-size: 14px;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.25;
+}
+
+a { text-decoration: none; color: inherit; }
+
+/* ─── Scrollbar ─────────────────────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--divider); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-hint); }
+
+/* ─── Card — White surface with shadow (matches Flutter cards) ──────────────── */
+.card {
+  background: var(--surface);
+  border-radius: 16px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.06);
+  border: 1px solid var(--divider);
+}
+
+/* legacy alias so existing pages still work */
+.glass-panel,
+.glass-card {
+  background: var(--surface);
+  border-radius: 16px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.06);
+  border: 1px solid var(--divider);
+  backdrop-filter: none;
+}
+
+.glass-card {
+  border-radius: 14px;
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+.glass-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.10);
+  border-color: var(--primary);
+}
+
+/* ─── Keyframes ─────────────────────────────────────────────────────────────── */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes slideIn {
+  from { transform: translateX(-16px); opacity: 0; }
+  to   { transform: translateX(0); opacity: 1; }
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.6; transform: scale(1.3); }
+}
+
+.animate-fade-in  { animation: fadeIn 0.35s ease-out forwards; }
+.animate-slide-in { animation: slideIn 0.3s ease-out forwards; }
+
+/* ─── Layout — Left sidebar (desktop) ──────────────────────────────────────── */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  min-height: 100vh;
+}
+
+.sidebar {
+  background: var(--surface);
+  border-right: 1px solid var(--divider);
+  display: flex;
+  flex-direction: column;
+  padding: 24px 16px;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+}
+
+.main-content {
+  padding: 32px 36px;
+  overflow-y: auto;
+  max-height: 100vh;
+  background: var(--background);
+}
+
+.feed-layout {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 24px;
+}
+
+/* ─── Buttons — matches Flutter's filled/outlined styles ───────────────────── */
+.btn-primary {
+  background-color: var(--primary);
+  color: #FFFFFF;
+  border: none;
+  border-radius: 12px;
+  padding: 12px 24px;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: background 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+}
+.btn-primary:hover:not(:disabled) {
+  background-color: var(--primary-hover);
+  box-shadow: 0 4px 14px rgba(59, 83, 245, 0.35);
+  transform: translateY(-1px);
+}
+.btn-primary:active { transform: scale(0.98); }
+.btn-primary:disabled { opacity: 0.45; cursor: not-allowed; }
+
+.btn-outlined {
+  background: transparent;
+  color: var(--primary);
+  border: 1.5px solid var(--primary);
+  border-radius: 12px;
+  padding: 11px 23px;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+}
+.btn-outlined:hover:not(:disabled) {
+  background: var(--primary-light);
+  transform: translateY(-1px);
+}
+.btn-outlined:disabled { opacity: 0.45; cursor: not-allowed; }
+
+.btn-ghost {
+  background: transparent;
+  color: var(--text-secondary);
+  border: none;
+  border-radius: 10px;
+  padding: 10px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+.btn-ghost:hover { background: var(--surface-hover); color: var(--text-primary); }
+
+/* ─── Nav Item (sidebar) ────────────────────────────────────────────────────── */
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: all 0.15s ease;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  width: 100%;
+  text-align: left;
+}
+.nav-item:hover {
+  background: var(--background);
+  color: var(--text-primary);
+}
+.nav-item.active {
+  background: var(--primary-light);
+  color: var(--primary);
+  font-weight: 600;
+}
+.nav-item.active svg { color: var(--primary); }
+
+/* ─── Form System ───────────────────────────────────────────────────────────── */
+.form-input-container {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 18px;
+}
+
+.form-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  letter-spacing: 0.01em;
+}
+
+.form-input {
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  padding: 13px 16px;
+  color: var(--text-primary);
+  font-size: 14px;
+  font-family: 'Inter', sans-serif;
+  outline: none;
+  transition: all 0.2s ease;
+  width: 100%;
+}
+.form-input::placeholder { color: var(--text-hint); }
+.form-input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--primary-glow);
+}
+.form-input:disabled {
+  background: var(--background);
+  color: var(--text-hint);
+  cursor: not-allowed;
+}
+
+/* ─── Skill / Category Chips ────────────────────────────────────────────────── */
+.skill-chip {
+  background: var(--primary-light);
+  color: var(--primary);
+  border: 1.5px solid rgba(59, 83, 245, 0.2);
+  padding: 5px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+.skill-chip.selectable { cursor: pointer; }
+.skill-chip.selectable:hover {
+  background: rgba(59, 83, 245, 0.15);
+  border-color: var(--primary);
+}
+.skill-chip.selected {
+  background: var(--primary);
+  color: #fff;
+  border-color: var(--primary);
+}
+
+/* ─── Status / Badge Pills ──────────────────────────────────────────────────── */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: capitalize;
+}
+.badge-open    { background: var(--success-bg); color: var(--success); }
+.badge-progress{ background: var(--blue-light);  color: var(--blue-accent); }
+.badge-done    { background: #F3F4F6; color: var(--text-secondary); }
+.badge-overdue { background: var(--error-bg); color: var(--error); }
+.badge-review  { background: #FEF3C7; color: #D97706; }
+
+/* ─── Avatar Ring ────────────────────────────────────────────────────────────── */
+.avatar-ring {
+  border: 2.5px solid var(--primary);
+  border-radius: 50%;
+  padding: 2px;
+  display: inline-flex;
+}
+
+/* ─── Stat Cards (Dashboard) ─────────────────────────────────────────────────── */
+.stat-card {
+  background: var(--surface);
+  border-radius: 16px;
+  padding: 20px;
+  border: 1px solid var(--divider);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* ─── Section Headers ────────────────────────────────────────────────────────── */
+.section-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 16px;
+}
+
+/* ─── Spinner ────────────────────────────────────────────────────────────────── */
+.spinner {
+  width: 28px;
+  height: 28px;
+  border: 3px solid var(--divider);
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+.spinner-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 60px 0;
+}
+
+/* ─── Empty State ────────────────────────────────────────────────────────────── */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 24px;
+  text-align: center;
+  color: var(--text-secondary);
+  gap: 12px;
+}
+.empty-state svg { color: var(--text-hint); margin-bottom: 4px; }
+.empty-state h3 { font-size: 16px; color: var(--text-primary); }
+.empty-state p  { font-size: 13px; max-width: 320px; }
+
+/* ─── Responsive: narrow sidebar on tablet ───────────────────────────────────── */
+@media (max-width: 900px) {
+  .dashboard-grid {
+    grid-template-columns: 200px 1fr;
+  }
+  .main-content { padding: 24px; }
+  .feed-layout  { grid-template-columns: 1fr; }
+}
+@media (max-width: 640px) {
+  .dashboard-grid { grid-template-columns: 1fr; }
+  .sidebar { display: none; }
+  .main-content { padding: 16px; }
+}
