@@ -103,6 +103,7 @@ const AuthScreen = () => {
                   <Mail size={13} /> Email Address
                 </label>
                 <input
+                  id="email-input"
                   type="email" className="form-input"
                   placeholder="name@saveetha.com"
                   required value={email}
@@ -117,6 +118,7 @@ const AuthScreen = () => {
                   <Lock size={13} /> Password
                 </label>
                 <input
+                  id="password-input"
                   type="password" className="form-input"
                   placeholder="••••••••"
                   required value={password}
@@ -125,7 +127,7 @@ const AuthScreen = () => {
                 />
               </div>
 
-              <button type="submit" className="btn-primary" style={{ width: '100%' }} disabled={loading}>
+              <button id="login-submit-btn" type="submit" className="btn-primary" style={{ width: '100%' }} disabled={loading}>
                 {loading ? 'Please wait…' : (isSignUp ? 'Create Account' : 'Sign In')}
               </button>
 

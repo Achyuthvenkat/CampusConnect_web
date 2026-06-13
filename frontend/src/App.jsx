@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate, Link, useNavigate, useLocation } from 'react-router-dom';
+import { HashRouter as Router, Routes, Route, Navigate, Link, useNavigate, useLocation } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import {
   Users,
@@ -13,17 +13,17 @@ import {
 } from 'lucide-react';
 
 // Import Pages
-import AuthScreen         from './pages/AuthScreen';
-import ProfileSetup       from './pages/ProfileSetup';
+import AuthScreen from './pages/AuthScreen';
+import ProfileSetup from './pages/ProfileSetup';
 import ExploreFreelancers from './pages/ExploreFreelancers';
-import GigsBoard          from './pages/ExploreGigs';
-import GigDetails         from './pages/GigDetails';
-import CreateGig          from './pages/CreateGig';
-import Dashboard          from './pages/Dashboard';
-import Chats              from './pages/Chats';
-import Profile            from './pages/Profile';
-import Bookmarks          from './pages/Bookmarks';
-import Teams              from './pages/Teams';
+import GigsBoard from './pages/ExploreGigs';
+import GigDetails from './pages/GigDetails';
+import CreateGig from './pages/CreateGig';
+import Dashboard from './pages/Dashboard';
+import Chats from './pages/Chats';
+import Profile from './pages/Profile';
+import Bookmarks from './pages/Bookmarks';
+import Teams from './pages/Teams';
 
 // ─── Protected Route ────────────────────────────────────────────────────────────
 const ProtectedRoute = ({ children }) => {
@@ -45,12 +45,12 @@ const DashboardLayout = ({ children }) => {
   const handleLogout = async () => { await logout(); navigate('/login'); };
 
   const navItems = [
-    { path: '/',           label: 'Explore',   icon: Compass },
-    { path: '/gigs',       label: 'Gigs',      icon: Briefcase },
-    { path: '/teams',      label: 'Teams',     icon: Users },
-    { path: '/dashboard',  label: 'Dashboard', icon: LayoutDashboard },
-    { path: '/chats',      label: 'Messages',  icon: MessageSquare },
-    { path: '/bookmarks',  label: 'Bookmarks', icon: Bookmark },
+    { path: '/', label: 'Explore', icon: Compass },
+    { path: '/gigs', label: 'Gigs', icon: Briefcase },
+    { path: '/teams', label: 'Teams', icon: Users },
+    { path: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
+    { path: '/chats', label: 'Messages', icon: MessageSquare },
+    { path: '/bookmarks', label: 'Bookmarks', icon: Bookmark },
     { path: `/profile/${userProfile?.uid}`, label: 'My Profile', icon: User },
   ];
 
@@ -134,7 +134,7 @@ const App = () => (
   <Router>
     <AuthProvider>
       <Routes>
-        <Route path="/login"  element={<AuthScreen />} />
+        <Route path="/login" element={<AuthScreen />} />
         <Route path="/signup" element={<AuthScreen />} />
         <Route path="/profile-setup" element={
           <ProtectedRoute><ProfileSetup /></ProtectedRoute>
@@ -143,16 +143,16 @@ const App = () => (
           <ProtectedRoute>
             <DashboardLayout>
               <Routes>
-                <Route path="/"              element={<ExploreFreelancers />} />
-                <Route path="/gigs"          element={<GigsBoard />} />
-                <Route path="/gigs/:id"      element={<GigDetails />} />
-                <Route path="/teams"         element={<Teams />} />
-                <Route path="/create-gig"    element={<CreateGig />} />
-                <Route path="/dashboard"     element={<Dashboard />} />
-                <Route path="/chats"         element={<Chats />} />
-                <Route path="/profile/:uid"  element={<Profile />} />
-                <Route path="/bookmarks"     element={<Bookmarks />} />
-                <Route path="*"              element={<Navigate to="/" replace />} />
+                <Route path="/" element={<ExploreFreelancers />} />
+                <Route path="/gigs" element={<GigsBoard />} />
+                <Route path="/gigs/:id" element={<GigDetails />} />
+                <Route path="/teams" element={<Teams />} />
+                <Route path="/create-gig" element={<CreateGig />} />
+                <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/chats" element={<Chats />} />
+                <Route path="/profile/:uid" element={<Profile />} />
+                <Route path="/bookmarks" element={<Bookmarks />} />
+                <Route path="*" element={<Navigate to="/" replace />} />
               </Routes>
             </DashboardLayout>
           </ProtectedRoute>
