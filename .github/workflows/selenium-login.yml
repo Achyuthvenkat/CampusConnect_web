@@ -21,7 +21,7 @@ jobs:
 
     - name: Install Frontend Dependencies
       run: |
-        cd web_platform/frontend
+        cd frontend
         npm install
 
     - name: Start Local Mock Server (Optional / For testing localhost)
@@ -36,12 +36,12 @@ jobs:
 
     - name: Install E2E Test Dependencies
       run: |
-        cd web_platform/frontend/selenium-tests
+        cd frontend/selenium-tests
         npm install
 
     - name: Run Headless Selenium Tests
       run: |
-        cd web_platform/frontend/selenium-tests
+        cd frontend/selenium-tests
         # Run tests using headless Chrome configuration
         export CHROME_PATH=$(which google-chrome)
         npm run test
