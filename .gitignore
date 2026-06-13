@@ -1,0 +1,24 @@
+# ─── Frontend (React / Vite) ───
+node_modules/
+frontend/node_modules/
+frontend/dist/
+frontend/selenium-tests/node_modules/
+.env
+.env.*.local
+.env.local
+
+# ─── Backend (Java / Spring Boot) ───
+backend/target/
+backend/*.log
+backend/local.properties
+
+# ─── Credentials / Security (CRITICAL) ───
+*.json
+!package.json
+!package-lock.json
+campus-connect-a6aa5-firebase-adminsdk-fbsvc-70d599a28a.json
+
+# ─── System files ───
+.DS_Store
+Thumbs.db
+*.log

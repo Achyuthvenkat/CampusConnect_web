@@ -1,0 +1,7 @@
+
+serviceAccountKey.json
+*.json.key
+campus-connect-a6aa5-firebase-adminsdk-*.json
+/target/
+.idea/
+*.iml
