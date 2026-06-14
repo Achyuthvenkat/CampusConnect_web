@@ -28,7 +28,10 @@ export const AuthProvider = ({ children }) => {
         setUserProfile(null);
         setProfileExists(false);
       } else {
-        console.error("Error loading user profile", error);
+        console.error("Error loading user profile from backend:", error);
+        console.warn(
+          "Debugging Tip: If this is a connection/CORS error, ensure your Spring Boot backend is running locally on port 8080 and its SecurityConfig CORS configuration allows requests from http://localhost:5173."
+        );
       }
     }
   };

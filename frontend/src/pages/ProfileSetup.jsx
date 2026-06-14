@@ -68,15 +68,12 @@ const ProfileSetup = () => {
         bio: bio.trim(),
         department,
         isFreelancer,
-        hourlyRate: isFreelancer ? Double.parseDouble(hourlyRate) : 0,
+        hourlyRate: isFreelancer ? parseFloat(hourlyRate) : 0.0,
         skills: selectedSkills,
         availability: true,
         bookmarks: [],
         portfolio: []
       };
-
-      // Workaround for Double parsing in raw JS
-      payload.hourlyRate = isFreelancer ? parseFloat(hourlyRate) : 0.0;
 
       await api.post('/users/setup', payload);
       await reloadProfile(); // Refresh context profileExists to true
