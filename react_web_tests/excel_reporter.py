@@ -120,7 +120,7 @@ class ExcelReporter:
         # sub-header
         ws.merge_cells("A2:J2")
         c = ws["A2"]
-        c.value     = f"  Generated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}   |   App URL: http://localhost:5173"
+        c.value     = f"  Generated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}   |   App URL: http://localhost:5173/CampusConnect_web/"
         c.font      = _font(9, italic=True, color=CLR["accent_teal"])
         c.fill      = _fill(CLR["deep_navy"])
         c.alignment = _align("left", "center")

@@ -2,7 +2,7 @@ import os
 
 # ── Target App URL ──────────────────────────────────────────────────────────
 # The React/Vite app must be running on this URL before tests are executed.
-WEB_URL = os.environ.get("CAMPUSCONNECT_WEB_URL", "http://localhost:5173")
+WEB_URL = os.environ.get("CAMPUSCONNECT_WEB_URL", "http://localhost:5173/CampusConnect_web/")
 
 # ── Test Credentials ────────────────────────────────────────────────────────
 TEST_USER_EMAIL    = "sreenu@saveetha.com"

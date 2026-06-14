@@ -46,6 +46,8 @@ class BaseTest:
         print("Starting Chrome WebDriver...")
         self.driver = webdriver.Chrome(options=opts)
         self.driver.implicitly_wait(2)
+        
+        # Load the base URL
         self.driver.get(config.WEB_URL)
         print(f"Opened: {config.WEB_URL}")
         time.sleep(config.PAGE_LOAD_WAIT)
@@ -93,7 +95,14 @@ class BaseTest:
 
     def navigate(self, path):
         """Navigate to an app path."""
-        self.driver.get(config.WEB_URL.rstrip('/') + path)
+        # Convert path to HashRouter format if it doesn't already contain #
+        if not path.startswith('/#'):
+            hash_path = '/#' + path if path.startswith('/') else '/#/' + path
+        else:
+            hash_path = path
+        
+        url = config.WEB_URL.rstrip('/') + hash_path
+        self.driver.get(url)
         time.sleep(config.PAGE_LOAD_WAIT)
 
     def current_path(self):

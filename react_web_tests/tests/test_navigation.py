@@ -93,7 +93,7 @@ def run_nav_08_active_nav_highlighted(driver):
 def run_nav_09_404_redirects(driver):
     t = _base(driver)
     t.ensure_logged_in()
-    t.driver.get(config.WEB_URL + '/this-page-does-not-exist-12345')
+    t.navigate('/this-page-does-not-exist-12345')
     time.sleep(3)
     url = driver.current_url
     body = t.page_text()

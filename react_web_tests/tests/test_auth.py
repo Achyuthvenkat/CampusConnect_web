@@ -187,7 +187,7 @@ def _ensure_signed_out(driver):
 def run_auth_13_unauthenticated_chats_redirect(driver):
     t = _base(driver)
     _ensure_signed_out(driver)          # sign out only if NOT already on /login
-    t.driver.get(config.WEB_URL + '/chats')
+    t.navigate('/chats')
     time.sleep(3)
     assert '/login' in driver.current_url, \
         f"Expected redirect to /login, got {driver.current_url}"
@@ -199,7 +199,7 @@ def run_auth_13_unauthenticated_chats_redirect(driver):
 def run_auth_14_unauthenticated_gigs_redirect(driver):
     t = _base(driver)
     _ensure_signed_out(driver)
-    t.driver.get(config.WEB_URL + '/gigs')
+    t.navigate('/gigs')
     time.sleep(3)
     assert '/login' in driver.current_url, \
         f"Expected redirect to /login, got {driver.current_url}"
@@ -211,7 +211,7 @@ def run_auth_14_unauthenticated_gigs_redirect(driver):
 def run_auth_15_unauthenticated_teams_redirect(driver):
     t = _base(driver)
     _ensure_signed_out(driver)
-    t.driver.get(config.WEB_URL + '/teams')
+    t.navigate('/teams')
     time.sleep(3)
     assert '/login' in driver.current_url, \
         f"Expected redirect to /login, got {driver.current_url}"
@@ -223,7 +223,7 @@ def run_auth_15_unauthenticated_teams_redirect(driver):
 def run_auth_16_unauthenticated_dashboard_redirect(driver):
     t = _base(driver)
     _ensure_signed_out(driver)
-    t.driver.get(config.WEB_URL + '/dashboard')
+    t.navigate('/dashboard')
     time.sleep(3)
     assert '/login' in driver.current_url, \
         f"Expected redirect to /login, got {driver.current_url}"
