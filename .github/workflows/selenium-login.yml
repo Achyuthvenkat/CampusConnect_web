@@ -52,3 +52,10 @@ jobs:
       with:
         name: selenium-test-report
         path: react_web_tests/test_report.xlsx
+    
+    - name: Upload Load Test Excel Report
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: load-test-report
+        path: react_web_tests/load_test_report.xlsx
