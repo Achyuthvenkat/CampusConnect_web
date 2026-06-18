@@ -51,4 +51,4 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: selenium-test-report
-        path: web_platform/react_web_tests/test_report.xlsx
+        path: react_web_tests/test_report.xlsx
