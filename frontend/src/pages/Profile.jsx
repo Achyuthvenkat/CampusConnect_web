@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import api from '../config/api';
-import { Star, Bookmark, Clock, GraduationCap, MessageSquare, Link as LinkIcon, ExternalLink } from 'lucide-react';
+import { Star, Bookmark, Clock, GraduationCap, MessageSquare, Link as LinkIcon, ExternalLink, Edit, X } from 'lucide-react';
 
 const formatINR = (v) =>
   new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(v);
@@ -17,6 +17,16 @@ const Profile = () => {
   const [loading, setLoading]         = useState(true);
   const [error, setError]             = useState('');
   const [isBookmarked, setIsBookmarked] = useState(false);
+
+  // Edit Profile States
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [editName, setEditName] = useState('');
+  const [editDept, setEditDept] = useState('');
+  const [editRate, setEditRate] = useState('');
+  const [editBio, setEditBio] = useState('');
+  const [editSkills, setEditSkills] = useState([]);
+  const [updating, setUpdating] = useState(false);
+  const [editError, setEditError] = useState('');
 
   useEffect(() => {
     const fetch = async () => {
@@ -49,6 +59,55 @@ const Profile = () => {
     await api.put('/users/profile', { availability: next });
     setProfile(p => ({ ...p, availability: next }));
     await reloadProfile();
+  };
+
+  const handleOpenEdit = () => {
+    if (!profile) return;
+    setEditName(profile.name || '');
+    setEditDept(profile.department || 'Computer Science');
+    setEditRate(profile.hourlyRate ? String(profile.hourlyRate) : '0');
+    setEditBio(profile.bio || '');
+    setEditSkills(profile.skills || []);
+    setEditError('');
+    setShowEditModal(true);
+  };
+
+  const handleSkillToggle = (skill) => {
+    if (editSkills.includes(skill)) {
+      setEditSkills(editSkills.filter(s => s !== skill));
+    } else {
+      setEditSkills([...editSkills, skill]);
+    }
+  };
+
+  const handleSaveProfile = async (e) => {
+    e.preventDefault();
+    setUpdating(true);
+    setEditError('');
+
+    if (!editName.trim()) {
+      setEditError('Full name is required.');
+      setUpdating(false);
+      return;
+    }
+
+    try {
+      const payload = {
+        name: editName.trim(),
+        department: editDept,
+        hourlyRate: parseFloat(editRate) || 0,
+        bio: editBio.trim(),
+        skills: editSkills
+      };
+      await api.put('/users/profile', payload);
+      setProfile(p => ({ ...p, ...payload }));
+      await reloadProfile();
+      setShowEditModal(false);
+    } catch (err) {
+      setEditError(err.response?.data || 'Failed to update profile.');
+    } finally {
+      setUpdating(false);
+    }
   };
 
   if (loading) return <div className="spinner-wrap"><div className="spinner" /></div>;
@@ -119,10 +178,15 @@ const Profile = () => {
         {/* Action buttons */}
         <div style={{ display: 'flex', gap: 10, justifyContent: 'center', flexWrap: 'wrap' }}>
           {isMe ? (
-            <button className="btn-outlined" onClick={handleToggleAvailability}>
-              <Clock size={15} />
-              {profile.availability ? 'Mark Unavailable' : 'Mark Available'}
-            </button>
+            <>
+              <button className="btn-outlined" onClick={handleToggleAvailability}>
+                <Clock size={15} />
+                {profile.availability ? 'Mark Unavailable' : 'Mark Available'}
+              </button>
+              <button className="btn-primary" onClick={handleOpenEdit} style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                <Edit size={15} /> Edit Profile
+              </button>
+            </>
           ) : (
             <>
               <button className="btn-primary"
@@ -186,6 +250,127 @@ const Profile = () => {
           ))
         )}
       </div>
+
+      {/* Edit Profile Modal */}
+      {showEditModal && (
+        <div style={{
+          position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+          background: 'rgba(15,23,42,0.8)', backdropFilter: 'blur(8px)',
+          display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 1000
+        }}>
+          <div className="card animate-fade-in" style={{ width: '100%', maxWidth: 500, padding: 24, maxHeight: '90vh', overflowY: 'auto', border: '1.5px solid var(--primary)' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
+              <h2 style={{ fontSize: 18, fontWeight: 800, margin: 0 }}>Edit Profile</h2>
+              <button onClick={() => setShowEditModal(false)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-secondary)' }}>
+                <X size={20} />
+              </button>
+            </div>
+
+            {editError && (
+              <div style={{ background: 'var(--error-bg)', color: 'var(--error)', padding: 10, borderRadius: 8, fontSize: 13, marginBottom: 15 }}>
+                {editError}
+              </div>
+            )}
+
+            <form onSubmit={handleSaveProfile}>
+              <div style={{ marginBottom: 14 }}>
+                <label className="form-label" style={{ fontSize: 12 }}>Full Name</label>
+                <input
+                  type="text"
+                  className="form-input"
+                  required
+                  value={editName}
+                  onChange={e => setEditName(e.target.value)}
+                />
+              </div>
+
+              <div style={{ marginBottom: 14 }}>
+                <label className="form-label" style={{ fontSize: 12 }}>Department</label>
+                <select
+                  className="form-input"
+                  value={editDept}
+                  onChange={e => setEditDept(e.target.value)}
+                  style={{ background: 'var(--surface)', color: 'var(--text-primary)' }}
+                >
+                  {[
+                    'Computer Science',
+                    'Information Technology',
+                    'BioTechnology',
+                    'Electronics & Communication',
+                    'Mechanical Engineering',
+                    'Management Studies',
+                    'Dental Sciences'
+                  ].map(dept => (
+                    <option key={dept} value={dept}>{dept}</option>
+                  ))}
+                </select>
+              </div>
+
+              <div style={{ marginBottom: 14 }}>
+                <label className="form-label" style={{ fontSize: 12 }}>Hourly Rate (₹/hr)</label>
+                <input
+                  type="number"
+                  className="form-input"
+                  min="0"
+                  required
+                  value={editRate}
+                  onChange={e => setEditRate(e.target.value)}
+                />
+              </div>
+
+              <div style={{ marginBottom: 14 }}>
+                <label className="form-label" style={{ fontSize: 12 }}>About (Bio)</label>
+                <textarea
+                  className="form-input"
+                  rows="4"
+                  value={editBio}
+                  onChange={e => setEditBio(e.target.value)}
+                  placeholder="Describe your skills, portfolio, and experience..."
+                  style={{ resize: 'vertical' }}
+                />
+              </div>
+
+              <div style={{ marginBottom: 20 }}>
+                <label className="form-label" style={{ fontSize: 12, marginBottom: 8, display: 'block' }}>Skills</label>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, padding: 8, border: '1px solid var(--border)', borderRadius: 10, background: 'var(--background)' }}>
+                  {[
+                    'React JS', 'Flutter', 'Firebase', 'Java Boot', 'Python', 'Machine Learning',
+                    'Graphic Design', 'UI/UX Design', 'Video Editing', 'Content Writing', 
+                    'PPT Presentation', 'Lab Report Helper', 'Logo Design', 'Web Scraping'
+                  ].map(skill => {
+                    const active = editSkills.includes(skill);
+                    return (
+                      <button
+                        type="button"
+                        key={skill}
+                        onClick={() => handleSkillToggle(skill)}
+                        style={{
+                          padding: '4px 10px', borderRadius: 12, fontSize: 11, fontWeight: 600, cursor: 'pointer',
+                          border: active ? 'none' : '1px solid var(--border)',
+                          background: active ? 'var(--primary)' : 'var(--background)',
+                          color: active ? '#fff' : 'var(--text-secondary)',
+                          transition: 'all 0.15s ease'
+                        }}
+                      >
+                        {skill}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              <div style={{ display: 'flex', gap: 10, justifyContent: 'flex-end' }}>
+                <button type="button" className="btn-primary" onClick={() => setShowEditModal(false)} style={{ background: 'var(--surface)', border: '1px solid var(--border)', color: 'var(--text-secondary)' }} disabled={updating}>
+                  Cancel
+                </button>
+                <button type="submit" className="btn-primary" disabled={updating}>
+                  {updating ? 'Saving...' : 'Save Changes'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
