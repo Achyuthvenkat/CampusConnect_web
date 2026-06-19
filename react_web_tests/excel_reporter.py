@@ -65,6 +65,8 @@ CATEGORIES = [
     {"name": "Dashboard",             "prefix": "FN-DASH", "sheet": "Dashboard",            "icon": "📊"},
     {"name": "Profile & Bookmarks",   "prefix": "FN-PROF", "sheet": "Profile & Bookmarks",  "icon": "👤"},
     {"name": "Navigation & Routing",  "prefix": "FN-NAV",  "sheet": "Navigation & Routing", "icon": "🧭"},
+    {"name": "Bids & Proposals",      "prefix": "FN-BID",  "sheet": "Bids & Proposals",     "icon": "📨"},
+    {"name": "Ratings & Reviews",     "prefix": "FN-REV",  "sheet": "Ratings & Reviews",    "icon": "⭐"},
 ]
 
 
