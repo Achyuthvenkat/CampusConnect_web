@@ -59,3 +59,10 @@ jobs:
       with:
         name: load-test-report
         path: react_web_tests/load_test_report.xlsx
+
+    - name: Upload Vulnerability Test Excel Report
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: security-test-report
+        path: react_web_tests/security_test_report.xlsx
